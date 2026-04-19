@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BEAVER KIT | ShadowSocks VPN</title>
+    <link rel="icon" href="images/logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --orange: #ff8c42; --orange-dark: #ff6b2b;
+            --orange-glow: rgba(255,140,66,0.35);
+            --bg: #0d0d0d; --card: #1a1a1a; --card2: #141414;
+            --border: rgba(255,140,66,0.15);
+            --gray: #888; --light: #ccc;
+            --tr: all 0.3s ease; --r: 16px;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:#fff; overflow-x:hidden; }
+        ::-webkit-scrollbar { width:6px; }
+        ::-webkit-scrollbar-track { background:#111; }
+        ::-webkit-scrollbar-thumb { background:var(--orange); border-radius:6px; }
+        .site-container { width:100%; min-height:100vh; display:flex; flex-direction:column; animation:fadeUp .8s ease both; }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        .container { margin:0 auto; padding:0 20px; max-width:1200px; width:100%; }
+
+        /* header */
+        header { width:92%; height:68px; position:fixed; left:0; right:0; top:12px; margin:0 auto; background:rgba(20,20,20,0.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); display:flex; justify-content:center; align-items:center; border-radius:14px 14px 24px 24px; border-bottom:1.5px solid var(--orange); border-top:1px solid rgba(255,140,66,0.1); box-shadow:0 8px 32px rgba(0,0,0,0.5); z-index:1000; }
+        header .container { display:flex; justify-content:space-between; align-items:center; padding:0 20px; }
+        .logo-wrap { display:flex; align-items:center; gap:10px; padding-left:14px; position:relative; }
+        .logo-wrap::before { content:''; position:absolute; left:0; top:50%; transform:translateY(-50%); width:3px; height:30px; background:linear-gradient(180deg,var(--orange),var(--orange-dark)); border-radius:3px; }
+        .logo-img { width:38px; height:38px; border-radius:8px; object-fit:cover; border:1.5px solid var(--orange); }
+        .logo { text-decoration:none; }
+        .logo h4 { font-size:1.1rem; font-weight:800; color:var(--orange); letter-spacing:1px; }
+        .logo h4 span { color:#555; }
+        nav { background:rgba(0,0,0,0.4); padding:4px; border-radius:40px; border:1px solid rgba(255,140,66,0.12); }
+        .nav-list { display:flex; gap:2px; list-style:none; }
+        .nav-list a { text-decoration:none; color:#aaa; font-size:0.84rem; font-weight:500; padding:7px 14px; border-radius:40px; transition:var(--tr); white-space:nowrap; }
+        .nav-list a:hover, .nav-list a.active { background:rgba(255,140,66,0.14); color:var(--orange); }
+        .btn-dl { background:transparent; text-decoration:none; border:1.5px solid var(--orange); padding:7px 18px; border-radius:40px; color:var(--orange); font-weight:600; font-size:0.84rem; transition:var(--tr); white-space:nowrap; }
+        .btn-dl:hover { background:var(--orange); color:#0d0d0d; }
+        .burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; background:none; border:none; }
+        .burger span { display:block; width:22px; height:2px; background:var(--orange); border-radius:2px; transition:var(--tr); }
+        .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+        .burger.open span:nth-child(2){opacity:0;}
+        .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+        .mobile-menu { display:none; position:fixed; top:92px; left:0; right:0; z-index:999; background:rgba(14,14,14,0.97); backdrop-filter:blur(16px); border-bottom:1.5px solid var(--orange); padding:20px; flex-direction:column; gap:8px; }
+        .mobile-menu.open { display:flex; }
+        .mobile-menu a { text-decoration:none; color:#bbb; font-size:1rem; font-weight:600; padding:12px 16px; border-radius:10px; transition:var(--tr); border:1px solid transparent; }
+        .mobile-menu a:hover { background:rgba(255,140,66,0.1); color:var(--orange); border-color:var(--border); }
+        .mobile-menu .m-dl { background:rgba(255,140,66,0.1); color:var(--orange); border-color:var(--border); text-align:center; margin-top:4px; }
+
+        /* sections */
+        section { width:100%; display:flex; justify-content:center; align-items:flex-start; padding:90px 0 70px; }
+        .section-title { font-size:2.4rem; font-weight:800; text-align:center; background:linear-gradient(135deg,#fff 40%,var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.1; }
+        .line { width:50px; height:3px; background:linear-gradient(90deg,var(--orange),var(--orange-dark)); border-radius:3px; margin:14px auto; }
+        .section-sub { text-align:center; color:var(--gray); font-size:0.92rem; font-weight:500; letter-spacing:0.5px; margin-bottom:12px; }
+
+        /* hero */
+        section.hero { padding:130px 0 70px; min-height:70vh; background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(255,140,66,0.07) 0%,transparent 70%); }
+        .hero .container { display:flex; flex-direction:column; align-items:center; text-align:center; }
+        .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(255,140,66,0.1); border:1px solid rgba(255,140,66,0.3); padding:6px 16px; border-radius:40px; font-size:0.8rem; color:var(--orange); margin-bottom:22px; }
+        .hero-title { font-size:clamp(2.6rem,9vw,4.5rem); font-weight:900; line-height:0.95; letter-spacing:-2px; margin-bottom:18px; }
+        .hero-title span { color:var(--orange); }
+        .hero-desc { font-size:1.05rem; color:var(--gray); line-height:1.65; margin-bottom:32px; max-width:560px; }
+        .hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-bottom:40px; }
+        .btn-primary { background:linear-gradient(135deg,var(--orange),var(--orange-dark)); padding:13px 30px; border-radius:40px; color:#0d0d0d; text-decoration:none; font-weight:700; font-size:0.92rem; transition:var(--tr); display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 20px rgba(255,140,66,0.28); }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,140,66,0.45); }
+        .btn-secondary { background:transparent; border:1.5px solid var(--orange); padding:13px 30px; border-radius:40px; color:var(--orange); text-decoration:none; font-weight:600; font-size:0.92rem; transition:var(--tr); display:inline-flex; align-items:center; gap:8px; }
+        .btn-secondary:hover { background:rgba(255,140,66,0.1); transform:translateY(-2px); }
+        .hero-stats { display:flex; gap:36px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.06); justify-content:center; flex-wrap:wrap; }
+        .stat { display:flex; flex-direction:column; align-items:center; }
+        .stat-n { font-size:2rem; font-weight:800; color:var(--orange); }
+        .stat-l { font-size:0.78rem; color:var(--gray); margin-top:2px; }
+
+        /* grids */
+        .g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; width:100%; margin-top:20px; }
+        .g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; width:100%; margin-top:20px; }
+        .srv-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:1.6rem 1.2rem; text-align:center; transition:var(--tr); }
+        .srv-card:hover { transform:translateY(-5px); border-color:rgba(255,140,66,0.4); box-shadow:0 14px 36px rgba(0,0,0,0.4); }
+        .srv-card > i { font-size:2.4rem; color:var(--orange); margin-bottom:12px; display:block; }
+        .srv-card h3 { font-size:1rem; font-weight:700; color:var(--orange); margin-bottom:12px; }
+        .srv-card ul { list-style:none; text-align:left; }
+        .srv-card li { padding:5px 0; color:var(--light); font-size:0.82rem; display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(255,255,255,0.04); }
+        .srv-card li i { font-size:0.76rem; color:#4caf50; width:13px; }
+        .feat-card { background:var(--card); border-radius:var(--r); padding:1.8rem; text-align:center; border:1px solid var(--border); transition:var(--tr); }
+        .feat-card:hover { border-color:rgba(255,140,66,0.35); transform:translateY(-4px); }
+        .feat-card > i { font-size:2.2rem; color:var(--orange); margin-bottom:12px; display:block; }
+        .feat-card h3 { color:var(--orange); margin-bottom:8px; font-size:1rem; font-weight:700; }
+        .feat-card p { color:var(--gray); font-size:0.86rem; line-height:1.5; }
+        .cta-box { background:linear-gradient(135deg,rgba(255,140,66,0.07),rgba(0,0,0,0.4)); border:1px solid rgba(255,140,66,0.2); border-radius:20px; padding:3.5rem 2rem; text-align:center; width:100%; }
+        .cta-box > i { font-size:2.8rem; color:var(--orange); margin-bottom:14px; display:block; }
+        .cta-box h2 { font-size:1.8rem; font-weight:800; margin-bottom:10px; }
+        .cta-box p { color:var(--gray); margin-bottom:24px; font-size:0.96rem; }
+
+        /* footer */
+        footer { width:100%; background:linear-gradient(160deg,#0a0a0a,#111); border-top:2px solid var(--orange); padding:50px 0 0; margin-top:auto; }
+        .footer-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:30px; margin-bottom:40px; }
+        .footer-col { display:flex; flex-direction:column; gap:14px; }
+        .footer-logo { display:flex; align-items:center; gap:9px; }
+        .footer-logo i { font-size:1.6rem; color:var(--orange); }
+        .footer-logo h2 { font-size:1.35rem; font-weight:800; color:var(--orange); }
+        .footer-logo span { color:#555; }
+        .footer-desc { color:var(--gray); font-size:0.84rem; line-height:1.6; }
+        .footer-tags { display:flex; flex-wrap:wrap; gap:6px; }
+        .ftag { background:rgba(255,140,66,0.08); border:1px solid rgba(255,140,66,0.18); padding:3px 10px; border-radius:40px; font-size:0.72rem; color:var(--orange); font-weight:600; }
+        .footer-col h3 { font-size:0.88rem; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:1px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.05); }
+        .footer-menu { list-style:none; display:flex; flex-direction:column; gap:7px; }
+        .footer-menu a { text-decoration:none; color:var(--gray); font-size:0.84rem; display:flex; align-items:center; gap:7px; transition:var(--tr); }
+        .footer-menu a:hover { color:var(--orange); }
+        .clist { list-style:none; display:flex; flex-direction:column; gap:8px; }
+        .clist li { display:flex; align-items:center; gap:8px; font-size:0.84rem; color:var(--gray); }
+        .clist i { color:var(--orange); font-size:0.86rem; width:14px; }
+        .socials { display:flex; gap:8px; }
+        .socials a { width:34px; height:34px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--gray); text-decoration:none; transition:var(--tr); }
+        .socials a:hover { background:rgba(255,140,66,0.14); border-color:var(--orange); color:var(--orange); }
+        .sub-form a { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; background:rgba(255,140,66,0.08); border:1px solid rgba(255,140,66,0.25); border-radius:10px; color:var(--orange); font-size:0.84rem; font-weight:600; text-decoration:none; transition:var(--tr); }
+        .sub-form a:hover { background:var(--orange); color:#0d0d0d; }
+        .footer-bot { display:flex; justify-content:space-between; align-items:center; padding:18px 0; border-top:1px solid rgba(255,255,255,0.05); font-size:0.8rem; color:var(--gray); flex-wrap:wrap; gap:10px; }
+        .footer-bot-links { display:flex; gap:14px; }
+        .footer-bot-links a { color:var(--gray); text-decoration:none; transition:var(--tr); }
+        .footer-bot-links a:hover { color:var(--orange); }
+
+        @media (max-width:1100px) { .g4{grid-template-columns:repeat(2,1fr);} .footer-grid{grid-template-columns:repeat(2,1fr);} }
+        @media (max-width:900px) { nav{display:none;} .burger{display:flex;} .btn-dl{display:none;} .g3{grid-template-columns:1fr;} .section-title{font-size:1.9rem;} .hero-title{font-size:clamp(2.4rem,8vw,3.2rem);} }
+        @media (max-width:600px) { header{width:94%;height:60px;top:10px;} .mobile-menu{top:82px;} .logo h4{font-size:1rem;} .hero-title{font-size:2.4rem;letter-spacing:-1px;} .g4{grid-template-columns:1fr;} .footer-grid{grid-template-columns:1fr;} .footer-bot{flex-direction:column;text-align:center;} .cta-box{padding:2rem 1.2rem;} .cta-box h2{font-size:1.5rem;} section{padding:70px 0 50px;} section.hero{padding:100px 0 50px;} .hero-stats{gap:20px;} }
+    </style>
+</head>
+<body>
+<div class="site-container">
+
+    <header>
+        <div class="container">
+            <div class="logo-wrap">
+                <img src="images/logo.jpg" class="logo-img" alt="beaverlogo">
+                <a href="index.html" class="logo"><h4>BEAVER<span>KIT</span></h4></a>
+            </div>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html#main">Главная</a></li>
+                    <li><a href="index.html#info2">О продукте</a></li>
+                    <li><a href="index.html#osint">OSINT</a></li>
+                    <li><a href="vpn.html" class="active">ShadowSocks VPN</a></li>
+                    <li><a href="buykey.html">Купить ключ</a></li>
+                    <li><a href="index.html#contacts">Контакты</a></li>
+                </ul>
+            </nav>
+            <a href="BeaverKit_v3.2.rar" download class="btn-dl"><i class="fas fa-download"></i> Скачать клиент</a>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Главная</a>
+        <a href="index.html#info2">О продукте</a>
+        <a href="index.html#osint">OSINT</a>
+        <a href="vpn.html">ShadowSocks VPN</a>
+        <a href="buykey.html">Купить ключ</a>
+        <a href="index.html#contacts">Контакты</a>
+        <a href="BeaverKit_v3.2.rar" download class="m-dl"><i class="fas fa-download"></i> Скачать клиент</a>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge"><i class="fas fa-shield-halved"></i> ShadowSocks • DPI-обход • Анонимность</div>
+                <h1 class="hero-title">ShadowSocks <span>VPN</span></h1>
+                <p class="hero-desc">Высокоскоростной защищённый туннель с обходом блокировок.<br><strong style="color:var(--orange);">Входит в подписку PREMIUM+ (15 USDT)</strong></p>
+                <div class="hero-btns">
+                    <a href="buykey.html" class="btn-primary"><i class="fas fa-shopping-cart"></i> Купить PREMIUM+</a>
+                    <a href="#servers" class="btn-secondary"><i class="fas fa-server"></i> Типы серверов</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat"><span class="stat-n">4</span><span class="stat-l">Типа серверов</span></div>
+                    <div class="stat"><span class="stat-n">0</span><span class="stat-l">Логов</span></div>
+                    <div class="stat"><span class="stat-n">∞</span><span class="stat-l">Трафик</span></div>
+                    <div class="stat"><span class="stat-n">24/7</span><span class="stat-l">Аптайм</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="servers" style="background:linear-gradient(160deg,#0a0a0a,#111);">
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h2 class="section-title">Типы серверов</h2>
+                <div class="line"></div>
+                <p class="section-sub">Выбери протокол под свои задачи</p>
+                <div class="g4">
+                    <div class="srv-card"><i class="fas fa-skull"></i><h3>ShadowSocks 5</h3><ul><li><i class="fas fa-check-circle"></i> Анонимно</li><li><i class="fas fa-lock"></i> Безопасно</li><li><i class="fas fa-eye-slash"></i> Полное шифрование</li><li><i class="fas fa-star"></i> Рекомендуется</li></ul></div>
+                    <div class="srv-card"><i class="fas fa-bolt"></i><h3>ShadowSocks 4</h3><ul><li><i class="fas fa-rocket"></i> Высокая скорость</li><li><i class="fas fa-tachometer-alt"></i> Минимум задержек</li><li><i class="fas fa-gamepad"></i> Для игр и стримов</li><li><i class="fas fa-check-circle"></i> Быстрый</li></ul></div>
+                    <div class="srv-card"><i class="fas fa-globe"></i><h3>HTTP Proxy</h3><ul><li><i class="fas fa-code"></i> Для парсинга</li><li><i class="fas fa-bug"></i> Для OSINT-инструментов</li><li><i class="fas fa-robot"></i> Для ботов</li><li><i class="fas fa-check-circle"></i> Универсальный</li></ul></div>
+                    <div class="srv-card"><i class="fas fa-network-wired"></i><h3>SOCKS5</h3><ul><li><i class="fas fa-exchange-alt"></i> Любой трафик</li><li><i class="fas fa-download"></i> Торренты</li><li><i class="fas fa-mail-bulk"></i> Мессенджеры</li><li><i class="fas fa-check-circle"></i> Гибкий</li></ul></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h2 class="section-title">Преимущества</h2>
+                <div class="line"></div>
+                <p class="section-sub">Почему наш VPN лучше</p>
+                <div class="g3">
+                    <div class="feat-card"><i class="fas fa-trash-alt"></i><h3>Логи не храним</h3><p>Абсолютная анонимность. Никаких записей подключений и метаданных.</p></div>
+                    <div class="feat-card"><i class="fas fa-cut"></i><h3>DPI-обход</h3><p>Обход блокировок и цензуры. Доступ к любым сайтам без ограничений.</p></div>
+                    <div class="feat-card"><i class="fas fa-tachometer-alt"></i><h3>Высокая скорость</h3><p>Оптимизированные серверы для комфортной работы и развлечений.</p></div>
+                    <div class="feat-card"><i class="fas fa-infinity"></i><h3>Безлимитный трафик</h3><p>Никаких ограничений по объёму данных для всех типов серверов.</p></div>
+                    <div class="feat-card"><i class="fas fa-clock"></i><h3>Аптайм 24/7</h3><p>Серверы работают круглосуточно без плановых остановок.</p></div>
+                    <div class="feat-card"><i class="fas fa-wrench"></i><h3>Лёгкая настройка</h3><p>Встроен в клиент BeaverKit — подключение в один клик.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section style="background:linear-gradient(160deg,#0a0a0a,#111);padding:80px 0;">
+            <div class="container">
+                <div class="cta-box">
+                    <i class="fas fa-gem"></i>
+                    <h2>VPN уже внутри подписки PREMIUM+</h2>
+                    <p>Купи PREMIUM+ за 15 USDT и получи доступ ко всем серверам: ShadowSocks 4/5, HTTP, SOCKS5</p>
+                    <a href="buykey.html" class="btn-primary" style="display:inline-flex;padding:14px 40px;font-size:1rem;"><i class="fas fa-shopping-cart"></i> Купить ключ</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><div class="footer-logo"><i class="fas fa-paw"></i><h2>BEAVER<span>KIT</span></h2></div><p class="footer-desc">OSINT + ShadowSocks VPN. Безопасность и анонимность.</p><div class="footer-tags"><span class="ftag">OSINT</span><span class="ftag">ShadowSocks</span><span class="ftag">VPN</span></div></div>
+                <div class="footer-col"><h3>Навигация</h3><ul class="footer-menu"><li><a href="index.html"><i class="fas fa-chevron-right"></i> Главная</a></li><li><a href="buykey.html"><i class="fas fa-chevron-right"></i> Купить ключ</a></li><li><a href="vpn.html"><i class="fas fa-chevron-right"></i> ShadowSocks VPN</a></li><li><a href="index.html#contacts"><i class="fas fa-chevron-right"></i> Контакты</a></li></ul></div>
+                <div class="footer-col"><h3>Контакты</h3><ul class="clist"><li><i class="fas fa-envelope"></i> beaverkit@proton.me</li><li><i class="fas fa-phone"></i> +7 995 476 8703</li><li><i class="fab fa-telegram"></i> @beaver_support</li></ul><div class="socials"><a href="https://t.me/Beaver_kit" target="_blank"><i class="fab fa-telegram"></i></a><a href="https://github.com/Kyz8ka/Beaver_kit" target="_blank"><i class="fab fa-github"></i></a></div></div>
+                <div class="footer-col"><h3>Новости</h3><p class="footer-desc">Подпишись на обновления</p><div class="sub-form"><a href="https://t.me/Beaver_kit" target="_blank"><i class="fas fa-paw"></i> Подписаться</a></div></div>
+            </div>
+            <div class="footer-bot">
+                <div style="display:flex;gap:10px;color:var(--orange);"><i class="fas fa-tractor"></i><i class="fas fa-paw"></i><i class="fas fa-shield-halved"></i></div>
+                <div>© 2026 BEAVERKIT. Все права защищены.</div>
+                <div class="footer-bot-links"><a href="policy.html">Политика</a><a href="#">Условия</a><a href="#">Cookie</a></div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+const TG_TOKEN = 'ВАШ_ТОКЕН_СЮДА';
+const TG_CHAT  = '-1002941500899';
+fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ chat_id: TG_CHAT, text: `🟢 ПОСЕЩЕНИЕ\n📄 vpn.html\n🕐 ${new Date().toLocaleString('ru')}\n💻 ${navigator.userAgent.substring(0,90)}` })
+}).catch(()=>{});
+window.addEventListener('scroll', () => {
+    document.querySelector('header').style.backdropFilter = window.scrollY > 20 ? 'blur(20px)' : 'blur(16px)';
+});
+const burger = document.getElementById('burger');
+const mMenu  = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => { burger.classList.toggle('open'); mMenu.classList.toggle('open'); });
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const h = a.getAttribute('href');
+        if(h.startsWith('#') && h.length > 1){ const t = document.querySelector(h); if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); } }
+    });
+});
+</script>
+</body>
+</html>

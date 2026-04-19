@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BEAVER KIT | OSINT + ShadowSocks VPN</title>
+    <link rel="icon" href="images/logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --orange: #ff6a00;
+            --orange-dark: #e63900;
+            --orange-glow: rgba(255,140,66,0.35);
+            --bg: #0d0d0d;
+            --card: #1a1a1a;
+            --card2: #141414;
+            --border: rgba(255,140,66,0.15);
+            --gray: #888;
+            --light: #ccc;
+            --tr: all 0.3s ease;
+            --r: 16px;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 6px; }
+
+        .site-container { width: 100%; min-height: 100vh; display: flex; flex-direction: column; animation: fadeUp .8s ease both; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+        .container { margin: 0 auto; padding: 0 20px; max-width: 1200px; width: 100%; }
+
+        /* ── HEADER ── */
+        header {
+            width: 92%; height: 68px;
+            position: fixed; left: 0; right: 0; top: 12px; margin: 0 auto;
+            background: rgba(20,20,20,0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: flex; justify-content: center; align-items: center;
+            border-radius: 14px 14px 24px 24px;
+            border-bottom: 1.5px solid var(--orange);
+            border-top: 1px solid rgba(255,140,66,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        header .container { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .logo-wrap { display: flex; align-items: center; gap: 10px; padding-left: 14px; position: relative; }
+        .logo-wrap::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 30px; background: linear-gradient(180deg, var(--orange), var(--orange-dark)); border-radius: 3px; }
+        .logo-img { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1.5px solid var(--orange); }
+        .logo { text-decoration: none; }
+        .logo h4 { font-size: 1.1rem; font-weight: 800; color: var(--orange); letter-spacing: 1px; }
+        .logo h4 span { color: #555; }
+
+        nav { background: rgba(0,0,0,0.4); padding: 4px; border-radius: 40px; border: 1px solid rgba(255,140,66,0.12); }
+        .nav-list { display: flex; gap: 2px; list-style: none; }
+        .nav-list a { text-decoration: none; color: #aaa; font-size: 0.84rem; font-weight: 500; padding: 7px 14px; border-radius: 40px; transition: var(--tr); white-space: nowrap; }
+        .nav-list a:hover, .nav-list a.active { background: rgba(255,140,66,0.14); color: var(--orange); }
+
+        .btn-dl { background: transparent; text-decoration: none; border: 1.5px solid var(--orange); padding: 7px 18px; border-radius: 40px; color: var(--orange); font-weight: 600; font-size: 0.84rem; transition: var(--tr); white-space: nowrap; }
+        .btn-dl:hover { background: var(--orange); color: #0d0d0d; box-shadow: 0 0 18px var(--orange-glow); }
+
+        /* hamburger */
+        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
+        .burger span { display: block; width: 22px; height: 2px; background: var(--orange); border-radius: 2px; transition: var(--tr); }
+        .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .burger.open span:nth-child(2) { opacity: 0; }
+        .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        .mobile-menu { display: none; position: fixed; top: 92px; left: 0; right: 0; z-index: 999; background: rgba(14,14,14,0.97); backdrop-filter: blur(16px); border-bottom: 1.5px solid var(--orange); padding: 20px; flex-direction: column; gap: 8px; }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a { text-decoration: none; color: #bbb; font-size: 1rem; font-weight: 600; padding: 12px 16px; border-radius: 10px; transition: var(--tr); border: 1px solid transparent; }
+        .mobile-menu a:hover { background: rgba(255,140,66,0.1); color: var(--orange); border-color: var(--border); }
+        .mobile-menu .m-dl { background: rgba(255,140,66,0.1); color: var(--orange); border-color: var(--border); text-align: center; margin-top: 4px; }
+
+        /* ── SECTIONS base ── */
+        section { width: 100%; display: flex; justify-content: center; align-items: flex-start; padding: 90px 0 70px; }
+        .section-title { font-size: 2.4rem; font-weight: 800; text-align: center; background: linear-gradient(135deg, #fff 40%, var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; }
+        .line { width: 50px; height: 3px; background: linear-gradient(90deg, var(--orange), var(--orange-dark)); border-radius: 3px; margin: 14px auto; }
+        .section-sub { text-align: center; color: var(--gray); font-size: 0.92rem; font-weight: 500; letter-spacing: 0.5px; margin-bottom: 12px; }
+
+        /* ── HERO ── */
+        section.hero { padding: 130px 0 70px; min-height: 95vh; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,140,66,0.07) 0%, transparent 70%); }
+        .hero .container { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0; }
+
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,140,66,0.1); border: 1px solid rgba(255,140,66,0.3); padding: 6px 16px; border-radius: 40px; font-size: 0.8rem; color: var(--orange); margin-bottom: 22px; }
+        .hero-title { font-size: clamp(3rem, 10vw, 5.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -2px; margin-bottom: 18px; }
+        .hero-title span { color: var(--orange); }
+        .hero-desc { font-size: 1.05rem; color: var(--gray); line-height: 1.65; margin-bottom: 32px; max-width: 560px; }
+
+        .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 44px; }
+        .btn-primary { background: linear-gradient(135deg, var(--orange), var(--orange-dark)); padding: 13px 30px; border-radius: 40px; color: #0d0d0d; text-decoration: none; font-weight: 700; font-size: 0.92rem; transition: var(--tr); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(255,140,66,0.28); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,140,66,0.45); }
+        .btn-secondary { background: transparent; border: 1.5px solid var(--orange); padding: 13px 30px; border-radius: 40px; color: var(--orange); text-decoration: none; font-weight: 600; font-size: 0.92rem; transition: var(--tr); display: inline-flex; align-items: center; gap: 8px; }
+        .btn-secondary:hover { background: rgba(255,140,66,0.1); transform: translateY(-2px); }
+
+        .hero-stats { display: flex; gap: 40px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.06); justify-content: center; flex-wrap: wrap; }
+        .stat { display: flex; flex-direction: column; align-items: center; }
+        .stat-n { font-size: 2rem; font-weight: 800; color: var(--orange); }
+        .stat-l { font-size: 0.78rem; color: var(--gray); margin-top: 2px; }
+
+        /* ── SCREENSHOTS ── */
+        .screenshots { background: linear-gradient(160deg,#0a0a0a,#111); }
+        .screens-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; margin-top: 28px; }
+        .screen-item { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); transition: var(--tr); cursor: pointer; aspect-ratio: 16/10; background: var(--card2); display: flex; align-items: center; justify-content: center; position: relative; }
+        .screen-item:hover { border-color: rgba(255,140,66,0.5); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
+        .screen-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .screen-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--gray); font-size: 0.82rem; }
+        .screen-placeholder i { font-size: 2rem; color: rgba(255,140,66,0.3); }
+        .screen-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(0,0,0,0.8), transparent); padding: 20px 14px 10px; font-size: 0.8rem; color: #ccc; font-weight: 600; }
+
+        /* lightbox */
+        .lightbox { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
+        .lightbox.active { display: flex; }
+        .lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 0 60px rgba(0,0,0,0.8); }
+        .lightbox-close { position: absolute; top: 20px; right: 24px; font-size: 2rem; color: #fff; cursor: pointer; background: none; border: none; line-height: 1; opacity: 0.7; transition: var(--tr); }
+        .lightbox-close:hover { opacity: 1; color: var(--orange); }
+
+        /* ── CARDS GRID ── */
+        .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; margin-top: 20px; }
+        .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; margin-top: 20px; }
+        .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; width: 100%; margin-top: 20px; }
+
+        .adv-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 1.5rem; transition: var(--tr); display: flex; flex-direction: column; gap: 14px; }
+        .adv-card:hover { border-color: rgba(255,140,66,0.35); transform: translateY(-4px); box-shadow: 0 16px 36px rgba(0,0,0,0.4); }
+        .card-hdr { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .card-hdr i { font-size: 1.5rem; color: var(--orange); width: 36px; }
+        .card-hdr h3 { font-size: 0.96rem; font-weight: 700; }
+        .card-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+        .card-list li { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: 8px; font-size: 0.84rem; color: var(--light); background: rgba(255,255,255,0.025); transition: var(--tr); }
+        .card-list li:hover { background: rgba(255,140,66,0.07); }
+        .card-list i { color: var(--orange); font-size: 0.76rem; width: 14px; }
+        .badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(255,140,66,0.08); border: 1px solid rgba(255,140,66,0.22); padding: 5px 12px; border-radius: 40px; font-size: 0.77rem; color: var(--orange); align-self: flex-start; }
+
+        .srv-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 1.6rem 1.2rem; text-align: center; transition: var(--tr); }
+        .srv-card:hover { transform: translateY(-5px); border-color: rgba(255,140,66,0.4); box-shadow: 0 14px 36px rgba(0,0,0,0.4); }
+        .srv-card > i { font-size: 2.4rem; color: var(--orange); margin-bottom: 12px; display: block; }
+        .srv-card h3 { font-size: 1rem; font-weight: 700; color: var(--orange); margin-bottom: 12px; }
+        .srv-card ul { list-style: none; text-align: left; }
+        .srv-card li { padding: 5px 0; color: var(--light); font-size: 0.82rem; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .srv-card li i { font-size: 0.76rem; color: #4caf50; width: 13px; }
+
+        /* keys */
+        .keys-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; width: 100%; margin-top: 20px; }
+        .key-card { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--r); padding: 1.8rem 1.3rem; text-align: center; transition: var(--tr); position: relative; display: flex; flex-direction: column; align-items: center; gap: 11px; }
+        .key-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .key-card.popular { border-color: var(--orange); box-shadow: 0 0 28px rgba(255,140,66,0.12); background: linear-gradient(160deg,#1e1500,var(--card)); }
+        .pop-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,var(--orange),var(--orange-dark)); padding: 4px 14px; border-radius: 40px; font-size: 0.75rem; font-weight: 700; color: #0d0d0d; white-space: nowrap; }
+        .key-card i { font-size: 2rem; }
+        .key-card.free i { color: #4caf50; }
+        .key-card.premium i { color: #2196f3; }
+        .key-card.plus i, .key-card.popular i { color: var(--orange); }
+        .key-card.hacker i { color: #e91e63; }
+        .price { font-size: 1.7rem; font-weight: 900; color: var(--orange); }
+        .key-card ul { list-style: none; width: 100%; display: flex; flex-direction: column; gap: 5px; margin-bottom: 6px; }
+        .key-card li { display: flex; align-items: center; gap: 7px; font-size: 0.82rem; color: var(--light); text-align: left; padding: 5px 9px; border-radius: 8px; background: rgba(255,255,255,0.025); }
+        .btn-key { display: inline-block; padding: 9px 24px; border-radius: 40px; background: rgba(255,140,66,0.1); border: 1.5px solid rgba(255,140,66,0.35); color: var(--orange); font-weight: 700; font-size: 0.88rem; text-decoration: none; transition: var(--tr); width: 100%; text-align: center; }
+        .btn-key:hover { background: var(--orange); color: #0d0d0d; }
+
+        /* contacts */
+        .contacts-card { background: var(--card); border: 1px solid rgba(255,140,66,0.18); border-radius: 20px; padding: 2.4rem; width: 100%; max-width: 740px; display: flex; flex-direction: column; gap: 20px; }
+        .contacts-card .title h3 { font-size: 0.95rem; color: var(--light); display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .contacts-card .links { display: flex; gap: 10px; flex-wrap: wrap; }
+        .contacts-card .links a { display: inline-flex; align-items: center; gap: 7px; padding: 9px 20px; border-radius: 40px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); color: #ddd; text-decoration: none; font-size: 0.88rem; transition: var(--tr); }
+        .contacts-card .links a:hover { background: rgba(255,140,66,0.1); border-color: var(--orange); color: var(--orange); }
+
+        /* ── FORM ── */
+        .form-card { background: var(--card); border: 1px solid rgba(255,140,66,0.18); border-radius: 20px; padding: 2rem; width: 100%; max-width: 520px; margin: 0 auto; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 7px; color: var(--gray); font-size: 0.88rem; font-weight: 500; }
+        .form-group label i { color: var(--orange); margin-right: 7px; }
+        .form-group.optional label::after { content: ' (необязательно)'; font-size: 0.75rem; color: #555; font-weight: 400; }
+        input, textarea, select { border: 1px solid rgba(255,140,66,0.25); background: rgba(0,0,0,0.4); color: #fff; border-radius: 10px; padding: 11px 14px; font-family: 'Inter', sans-serif; font-size: 0.92rem; width: 100%; transition: var(--tr); resize: vertical; }
+        input:focus, textarea:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,140,66,0.15); background: rgba(0,0,0,0.55); }
+        textarea { min-height: 110px; }
+        .btn-submit { background: linear-gradient(135deg, var(--orange), var(--orange-dark)); border: none; padding: 13px 24px; border-radius: 40px; color: #0d0d0d; font-weight: 700; font-size: 0.96rem; cursor: pointer; transition: var(--tr); width: 100%; display: flex; align-items: center; justify-content: center; gap: 9px; }
+        .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 22px rgba(255,140,66,0.38); }
+        .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        /* toast */
+        .toast { position: fixed; bottom: 24px; right: 20px; padding: 12px 20px; border-radius: 12px; color: #fff; z-index: 10000; font-size: 0.9rem; font-weight: 600; border-left: 4px solid; animation: toastIn .3s ease; max-width: calc(100vw - 40px); }
+        @keyframes toastIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toastOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(110%); opacity: 0; } }
+
+        /* footer */
+        footer { width: 100%; background: linear-gradient(160deg,#0a0a0a,#111); border-top: 2px solid var(--orange); padding: 50px 0 0; margin-top: auto; }
+        .footer-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 30px; margin-bottom: 40px; }
+        .footer-col { display: flex; flex-direction: column; gap: 14px; }
+        .footer-logo { display: flex; align-items: center; gap: 9px; }
+        .footer-logo i { font-size: 1.6rem; color: var(--orange); }
+        .footer-logo h2 { font-size: 1.35rem; font-weight: 800; color: var(--orange); }
+        .footer-logo span { color: #555; }
+        .footer-desc { color: var(--gray); font-size: 0.84rem; line-height: 1.6; }
+        .footer-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .ftag { background: rgba(255,140,66,0.08); border: 1px solid rgba(255,140,66,0.18); padding: 3px 10px; border-radius: 40px; font-size: 0.72rem; color: var(--orange); font-weight: 600; }
+        .footer-col h3 { font-size: 0.88rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .footer-menu { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+        .footer-menu a { text-decoration: none; color: var(--gray); font-size: 0.84rem; display: flex; align-items: center; gap: 7px; transition: var(--tr); }
+        .footer-menu a:hover { color: var(--orange); }
+        .clist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .clist li { display: flex; align-items: center; gap: 8px; font-size: 0.84rem; color: var(--gray); }
+        .clist i { color: var(--orange); font-size: 0.86rem; width: 14px; }
+        .socials { display: flex; gap: 8px; }
+        .socials a { width: 34px; height: 34px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gray); text-decoration: none; transition: var(--tr); }
+        .socials a:hover { background: rgba(255,140,66,0.14); border-color: var(--orange); color: var(--orange); }
+        .sub-form a { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; background: rgba(255,140,66,0.08); border: 1px solid rgba(255,140,66,0.25); border-radius: 10px; color: var(--orange); font-size: 0.84rem; font-weight: 600; text-decoration: none; transition: var(--tr); }
+        .sub-form a:hover { background: var(--orange); color: #0d0d0d; }
+        .footer-bot { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; color: var(--gray); flex-wrap: wrap; gap: 10px; }
+        .footer-bot-links { display: flex; gap: 14px; }
+        .footer-bot-links a { color: var(--gray); text-decoration: none; transition: var(--tr); }
+        .footer-bot-links a:hover { color: var(--orange); }
+
+        /* ── MEDIA ── */
+        @media (max-width: 1100px) {
+            .keys-grid { grid-template-columns: repeat(2,1fr); }
+            .g4 { grid-template-columns: repeat(2,1fr); }
+            .footer-grid { grid-template-columns: repeat(2,1fr); }
+        }
+        @media (max-width: 900px) {
+            nav { display: none; }
+            .burger { display: flex; }
+            .btn-dl { display: none; }
+            .g3 { grid-template-columns: 1fr; }
+            .screens-grid { grid-template-columns: repeat(2,1fr); }
+            .section-title { font-size: 1.9rem; }
+            .hero-title { font-size: clamp(2.6rem, 9vw, 4rem); letter-spacing: -1px; }
+        }
+        @media (max-width: 600px) {
+            header { width: 94%; height: 60px; top: 10px; }
+            .mobile-menu { top: 82px; }
+            .logo h4 { font-size: 1rem; }
+            .hero-title { font-size: 2.6rem; letter-spacing: -1px; }
+            .hero-desc { font-size: 0.95rem; }
+            .hero-stats { gap: 24px; }
+            .stat-n { font-size: 1.6rem; }
+            .screens-grid { grid-template-columns: 1fr; }
+            .g2, .g4, .keys-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bot { flex-direction: column; text-align: center; }
+            .contacts-card { padding: 1.4rem; }
+            .form-card { padding: 1.4rem; }
+            .section-title { font-size: 1.7rem; }
+            .hero-btns { gap: 10px; }
+            .btn-primary, .btn-secondary { padding: 11px 22px; font-size: 0.88rem; }
+            section { padding: 70px 0 50px; }
+            section.hero { padding: 100px 0 50px; }
+        }
+
+        /* ── LOGO ANIMATION ── */
+        @keyframes logoPulse {
+            0%,100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 6px rgba(255,106,0,0.5)); }
+            25% { transform: scale(1.08) rotate(-3deg); filter: drop-shadow(0 0 14px rgba(255,106,0,0.9)); }
+            75% { transform: scale(1.05) rotate(3deg); filter: drop-shadow(0 0 10px rgba(255,106,0,0.7)); }
+        }
+        @keyframes logoGlow {
+            0%,100% { box-shadow: 0 0 6px rgba(255,106,0,0.4), 0 0 14px rgba(255,106,0,0.2); }
+            50% { box-shadow: 0 0 18px rgba(255,106,0,0.9), 0 0 36px rgba(255,106,0,0.5); }
+        }
+        .logo-img {
+            animation: logoPulse 3s ease-in-out infinite, logoGlow 3s ease-in-out infinite !important;
+            cursor: pointer;
+        }
+        .logo-img:hover { animation-play-state: paused !important; transform: scale(1.15) rotate(5deg) !important; }
+    </style>
+</head>
+<body>
+<div class="site-container">
+
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <div class="logo-wrap">
+                <img src="images/logo.jpg" class="logo-img" alt="BeaverKit">
+                <a href="index.html" class="logo"><h4>BEAVER<span>KIT</span></h4></a>
+            </div>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="#main" class="active">Главная</a></li>
+                    <li><a href="#info2">О продукте</a></li>
+                    <li><a href="#osint">OSINT</a></li>
+                    <li><a href="vpn.html">VPN</a></li>
+                    <li><a href="buykey.html">Купить ключ</a></li>
+                    <li><a href="#contacts">Контакты</a></li>
+                </ul>
+            </nav>
+            <a href="BeaverKit_v3.2.rar" download class="btn-dl"><i class="fas fa-download"></i> Скачать</a>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#main" onclick="closeMobile()">Главная</a>
+        <a href="#info2" onclick="closeMobile()">О продукте</a>
+        <a href="#osint" onclick="closeMobile()">OSINT</a>
+        <a href="vpn.html">ShadowSocks VPN</a>
+        <a href="buykey.html">Купить ключ</a>
+        <a href="#contacts" onclick="closeMobile()">Контакты</a>
+        <a href="BeaverKit_v3.2.rar" download class="m-dl"><i class="fas fa-download"></i> Скачать клиент</a>
+    </div>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero" id="main">
+            <div class="container">
+                <div class="hero-badge"><i class="fas fa-shield-halved"></i> OSINT 2.0 + ShadowSocks VPN</div>
+                <h1 class="hero-title">BEAVER<span>KIT</span></h1>
+                <p class="hero-desc">Профессиональный набор инструментов для OSINT и кибербезопасности.<br>Встроенный ShadowSocks VPN + полная анонимность.</p>
+                <div class="hero-btns">
+                    <a href="buykey.html" class="btn-primary"><i class="fas fa-shopping-cart"></i> Купить ключ</a>
+                    <a href="vpn.html" class="btn-secondary"><i class="fas fa-shield-halved"></i> ShadowSocks VPN</a>
+                    <a href="https://t.me/Beaver_kit" class="btn-secondary" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat"><span class="stat-n">10+</span><span class="stat-l">Инструментов</span></div>
+                    <div class="stat"><span class="stat-n">500+</span><span class="stat-l">Клиентов</span></div>
+                    <div class="stat"><span class="stat-n">24/7</span><span class="stat-l">Поддержка</span></div>
+                    <div class="stat"><span class="stat-n">4</span><span class="stat-l">VPN-типа</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREENSHOTS -->
+        <section class="screenshots" id="screens">
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h2 class="section-title">Скриншоты</h2>
+                <div class="line"></div>
+                <p class="section-sub">Так выглядит BeaverKit в работе</p>
+                <div class="screens-grid">
+                    <div class="screen-item" onclick="openLight(this)">
+                        <img src="images/screen1.png" alt="Авторизация">
+                        <div class="screen-label">🔑 Авторизация</div>
+                    </div>
+                    <div class="screen-item" onclick="openLight(this)">
+                        <img src="images/screen2.png" alt="Barsuk AI">
+                        <div class="screen-label">🤖 Barsuk AI — Ассистент</div>
+                    </div>
+                    <div class="screen-item" onclick="openLight(this)">
+                        <img src="images/screen3.png" alt="Граф связей">
+                        <div class="screen-label">🕸️ Граф связей</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- О ПРОЕКТЕ -->
+        <section class="info2" id="info2">
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h2 class="section-title">О проекте</h2>
+                <div class="line"></div>
+                <p class="section-sub">Open Source проект на Python и Go</p>
+                <div class="g3">
+                    <div class="adv-card">
+                        <div class="card-hdr"><i class="fab fa-python"></i><h3>Написано на Python + Go</h3></div>
+                        <ul class="card-list">
+                            <li><i class="fas fa-code"></i> Полный Open Source</li>
+                            <li><i class="fas fa-users"></i> 7+ разработчиков</li>
+                            <li><i class="fas fa-chart-line"></i> 3 OSINT-проекта</li>
+                            <li><i class="fas fa-trash-alt"></i> Логи не храним</li>
+                            <li><i class="fas fa-code-branch"></i> Аудит кода открыт</li>
+                        </ul>
+                        <div class="badge"><i class="fab fa-github"></i> GitHub: Kyz8ka/Beaver_kit</div>
+                    </div>
+                    <div class="adv-card">
+                        <div class="card-hdr"><i class="fas fa-microchip"></i><h3>Свои разработки</h3></div>
+                        <ul class="card-list">
+                            <li><i class="fas fa-brain"></i> Bober AI</li>
+                            <li><i class="fas fa-shield-virus"></i> Антималварь</li>
+                            <li><i class="fas fa-bolt"></i> Скорость до 0.5 сек</li>
+                            <li><i class="fas fa-dragon"></i> Оффлайн-режим</li>
+                            <li><i class="fas fa-lock"></i> Трекер утечек</li>
+                        </ul>
+                        <div class="badge"><i class="fas fa-external-link-alt"></i> Без чужих API</div>
+                    </div>
+                    <div class="adv-card">
+                        <div class="card-hdr"><i class="fas fa-headset"></i><h3>Поддержка 24/7</h3></div>
+                        <ul class="card-list">
+                            <li><i class="fab fa-telegram"></i> @beaver_support</li>
+                            <li><i class="fas fa-envelope"></i> beaverkit@proton.me</li>
+                            <li><i class="fas fa-phone"></i> +7 995 476 8703</li>
+                            <li><i class="fas fa-clock"></i> Ответ в течение часа</li>
+                            
+                        </ul>
+                        <div class="badge"><i class="fas fa-handshake"></i> Свяжись с нами!</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OSINT -->
+        <section id="osint" style="background:linear-gradient(160deg,#0a0a0a,#111);">
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h2 class="section-title">OSINT и Анализ утечек</h2>
+                <div class="line"></div>
+                <p class="section-sub">Парсеры • Метаданные • Базы</p>
+                <div class="g2">
+                    <div class="adv-card">
+                        <div class="card-hdr"><i class="fas fa-database"></i><h3>Поиск утечек</h3></div>
+                        <ul class="card-list">
+                            <li><i class="fas fa-search"></i> Проверка email и телефона</li>
+                            <li><i class="fas fa-file-alt"></i> Проверка метаданных</li>
+                            <li><i class="fas fa-fingerprint"></i> Деанонимизация</li>
+                        </ul>
+                    </div>
+                    <div class="adv-card">
+                        <div class="card-hdr"><i class="fas fa-project-diagram"></i><h3>Граф связей</h3></div>
+                        <ul class="card-list">
+                            <li><i class="fas fa-project-diagram"></i> Визуализация связей</li>
+                            <li><i class="fas fa-hashtag"></i> Поиск по никам</li>
+                            <li><i class="fas fa-image"></i> Проверка метаданных фото</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VPN PREVIEW -->
+        <section id="vpn-preview">
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h2 class="section-title">ShadowSocks VPN</h2>
+                <div class="line"></div>
+                <p class="section-sub">Высокоскоростной защищённый туннель с обходом блокировок</p>
+                <div class="g4">
+                    <div class="srv-card"><i class="fas fa-skull"></i><h3>ShadowSocks 5</h3><ul><li><i class="fas fa-check-circle"></i> Анонимно</li><li><i class="fas fa-lock"></i> Полное шифрование</li><li><i class="fas fa-star"></i> Рекомендуется</li></ul></div>
+                    <div class="srv-card"><i class="fas fa-bolt"></i><h3>ShadowSocks 4</h3><ul><li><i class="fas fa-rocket"></i> Высокая скорость</li><li><i class="fas fa-gamepad"></i> Для игр и стримов</li><li><i class="fas fa-tachometer-alt"></i> Мин. задержки</li></ul></div>
+                    <div class="srv-card"><i class="fas fa-globe"></i><h3>HTTP Proxy</h3><ul><li><i class="fas fa-code"></i> Для парсинга</li><li><i class="fas fa-robot"></i> Для ботов</li><li><i class="fas fa-bug"></i> Для OSINT-инструментов</li></ul></div>
+                    <div class="srv-card"><i class="fas fa-network-wired"></i><h3>SOCKS5</h3><ul><li><i class="fas fa-exchange-alt"></i> Любой трафик</li><li><i class="fas fa-download"></i> Торренты</li><li><i class="fas fa-mail-bulk"></i> Мессенджеры</li></ul></div>
+                </div>
+                <div style="margin-top:20px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+                    <a href="vpn.html" class="btn-primary"><i class="fas fa-shield-halved"></i> Подробнее о VPN</a>
+                    <a href="buykey.html" class="btn-secondary"><i class="fas fa-shopping-cart"></i> Купить PREMIUM+</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- КЛЮЧИ -->
+        <!-- КОНТАКТЫ -->
+        <section id="contacts">
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h2 class="section-title">Остались вопросы?</h2>
+                <div class="line"></div>
+                <p class="section-sub">Свяжитесь с нами</p>
+                <div class="contacts-card">
+                    <div class="title">
+                        <h3><i class="fas fa-envelope"></i> beaverkit@proton.me</h3>
+                        <h3><i class="fas fa-phone"></i> +7 995 476 8703</h3>
+                        <h3><i class="fab fa-telegram"></i> @beaver_support</h3>
+                    </div>
+                    <div class="links">
+                        <a href="https://t.me/Beaver_kit" target="_blank"><i class="fab fa-telegram"></i> Telegram канал</a>
+                        <a href="https://t.me/beaver_support" target="_blank"><i class="fab fa-telegram"></i> Поддержка</a>
+                        <a href="https://github.com/Kyz8ka/Beaver_kit" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                    <div><h3 style="color:var(--gray);font-size:0.88rem;font-weight:500;"><i class="fas fa-lock" style="color:var(--orange);margin-right:8px;"></i>Логи не сохраняются — код открыт для аудита</h3></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ФОРМА -->
+        <section style="background:linear-gradient(160deg,#0a0a0a,#111);">
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h2 class="section-title">Нужна помощь?</h2>
+                <div class="line"></div>
+                <p class="section-sub">Напишите нам — ответим в течение часа</p>
+                <div class="form-card">
+                    <form id="contactForm" novalidate>
+                        <div class="form-group optional">
+                            <label><i class="fas fa-user"></i> От кого</label>
+                            <input type="text" name="name" placeholder="Иван или ник — необязательно">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-comment"></i> Сообщение *</label>
+                            <textarea name="message" placeholder="Расскажи, что тебя интересует или что случилось..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Отправить</button>
+                    </form>
+                </div>
+                <p style="color:var(--gray);font-size:0.78rem;margin-top:10px;text-align:center;">
+                    <i class="fas fa-lock" style="color:var(--orange);"></i> Нажимая «Отправить», вы соглашаетесь с
+                    <a href="policy.html" style="color:var(--orange);">политикой конфиденциальности</a>
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo"><i class="fas fa-paw"></i><h2>BEAVER<span>KIT</span></h2></div>
+                    <p class="footer-desc">OSINT + ShadowSocks VPN. Безопасность и анонимность для IT-специалистов.</p>
+                    <div class="footer-tags"><span class="ftag">OSINT</span><span class="ftag">ShadowSocks</span><span class="ftag">VPN</span><span class="ftag">SOCKS5</span></div>
+                </div>
+                <div class="footer-col">
+                    <h3>Навигация</h3>
+                    <ul class="footer-menu">
+                        <li><a href="#main"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                        <li><a href="#info2"><i class="fas fa-chevron-right"></i> О продукте</a></li>
+                        <li><a href="vpn.html"><i class="fas fa-chevron-right"></i> ShadowSocks VPN</a></li>
+                        <li><a href="buykey.html"><i class="fas fa-chevron-right"></i> Купить ключ</a></li>
+                        <li><a href="#contacts"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Контакты</h3>
+                    <ul class="clist">
+                        <li><i class="fas fa-envelope"></i> beaverkit@proton.me</li>
+                        <li><i class="fas fa-phone"></i> +7 995 476 8703</li>
+                        <li><i class="fab fa-telegram"></i> @beaver_support</li>
+                    </ul>
+                    <div class="socials">
+                        <a href="https://t.me/Beaver_kit" target="_blank"><i class="fab fa-telegram"></i></a>
+                        <a href="https://github.com/Kyz8ka/Beaver_kit" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Новости</h3>
+                    <p class="footer-desc">Подпишись на канал и получай обновления первым</p>
+                    <div class="sub-form"><a href="https://t.me/Beaver_kit" target="_blank"><i class="fas fa-paw"></i> Подписаться</a></div>
+                </div>
+            </div>
+            <div class="footer-bot">
+                <div style="display:flex;gap:10px;color:var(--orange);">
+                    <i class="fas fa-tractor"></i><i class="fas fa-paw"></i><i class="fas fa-shield-halved"></i>
+                </div>
+                <div>© 2026 BEAVERKIT. Все права защищены.</div>
+                <div class="footer-bot-links">
+                    <a href="policy.html">Политика</a>
+                    <a href="#">Условия</a>
+                    <a href="#">Cookie</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLight()">
+    <button class="lightbox-close" onclick="closeLight()">&times;</button>
+    <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+// ── Конфигурация ─────────────────────────────────────────────
+const TG_TOKEN  = '8283854680:AAFDe-uzj2ubfcVoQA5jpyGR_dCHbjH2FQs'; // <-- вставь токен
+const TG_CHAT   = '-1002941500899';
+const TG_API    = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+
+function tgSend(text) {
+    fetch(TG_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: 'HTML' })
+    }).catch(() => {});
+}
+
+// ── Лог посещения ─────────────────────────────────────────────
+tgSend(`🟢 <b>ПОСЕЩЕНИЕ</b>\n📄 Страница: index.html\n🕐 ${new Date().toLocaleString('ru')}\n💻 ${navigator.userAgent.substring(0,90)}`);
+
+// ── Хедер scroll ─────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+    document.querySelector('header').style.backdropFilter =
+        window.scrollY > 20 ? 'blur(20px)' : 'blur(16px)';
+});
+
+// ── Burger ───────────────────────────────────────────────────
+const burger = document.getElementById('burger');
+const mMenu  = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    mMenu.classList.toggle('open');
+});
+function closeMobile() {
+    burger.classList.remove('open');
+    mMenu.classList.remove('open');
+}
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href === '#' || href === '#main') {
+            e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (href.startsWith('#')) {
+            const t = document.querySelector(href);
+            if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+        }
+    });
+});
+
+// ── Lightbox ─────────────────────────────────────────────────
+function openLight(el) {
+    const img = el.querySelector('img');
+    if (!img || img.style.display === 'none') return;
+    document.getElementById('lightboxImg').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeLight() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLight(); });
+
+// ── Форма ─────────────────────────────────────────────────────
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn  = form.querySelector('button[type="submit"]');
+    const orig = btn.innerHTML;
+
+    const msg  = form.querySelector('[name="message"]').value.trim();
+    const name = form.querySelector('[name="name"]').value.trim();
+
+    if (!msg) { showToast('❌ Напишите сообщение!', 'error'); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+
+    const text = `📨 НОВОЕ СООБЩЕНИЕ С САЙТА\n\n`
+        + (name ? `👤 От: ${name}\n` : `👤 Анонимно\n`)
+        + `💬 Сообщение:\n${msg}\n\n🕐 ${new Date().toLocaleString('ru')}`;
+
+    // Используем URLSearchParams — избегает CORS-проблем с Content-Type: application/json
+    const params = new URLSearchParams();
+    params.append('chat_id', TG_CHAT);
+    params.append('text', text);
+
+    try {
+        const res  = await fetch(TG_API, {
+            method: 'POST',
+            body: params
+        });
+        const data = await res.json();
+        if (data.ok) {
+            showToast('✅ Сообщение отправлено! Скоро свяжемся.', 'success');
+            form.reset();
+        } else {
+            console.error('TG error:', data);
+            showToast('❌ Ошибка отправки. Напиши в Telegram @beaver_support', 'error');
+        }
+    } catch (err) {
+        console.error('Fetch error:', err);
+        showToast('❌ Сеть недоступна. Напиши в Telegram @beaver_support', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = orig;
+    }
+});
+
+function showToast(msg, type) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.style.background    = type === 'success' ? '#0d2a0d' : '#2a0d0d';
+    t.style.borderLeftColor = type === 'success' ? '#4caf50' : '#e91e63';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => {
+        t.style.animation = 'toastOut .3s ease forwards';
+        setTimeout(() => t.remove(), 320);
+    }, 4000);
+}
+</script>
+</body>
+</html>

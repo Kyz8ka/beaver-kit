@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BEAVER KIT | Покупка ключей</title>
+    <link rel="icon" href="images/logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --orange:#ff6a00; --orange-dark:#e63900;
+            --orange-glow:rgba(255,140,66,0.35);
+            --bg:#0d0d0d; --card:#1a1a1a; --card2:#141414;
+            --border:rgba(255,140,66,0.15);
+            --gray:#888; --light:#ccc;
+            --tr:all 0.3s ease; --r:16px;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;overflow-x:hidden;}
+        ::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-track{background:#111;} ::-webkit-scrollbar-thumb{background:var(--orange);border-radius:6px;}
+        .site-container{width:100%;min-height:100vh;display:flex;flex-direction:column;animation:fadeUp .8s ease both;}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        .container{margin:0 auto;padding:0 20px;max-width:1200px;width:100%;}
+
+        header{width:92%;height:68px;position:fixed;left:0;right:0;top:12px;margin:0 auto;background:rgba(20,20,20,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;justify-content:center;align-items:center;border-radius:14px 14px 24px 24px;border-bottom:1.5px solid var(--orange);border-top:1px solid rgba(255,140,66,0.1);box-shadow:0 8px 32px rgba(0,0,0,0.5);z-index:1000;}
+        header .container{display:flex;justify-content:space-between;align-items:center;padding:0 20px;}
+        .logo-wrap{display:flex;align-items:center;gap:10px;padding-left:14px;position:relative;}
+        .logo-wrap::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:30px;background:linear-gradient(180deg,var(--orange),var(--orange-dark));border-radius:3px;}
+        .logo-img{width:38px;height:38px;border-radius:8px;object-fit:cover;border:1.5px solid var(--orange);}
+        .logo{text-decoration:none;} .logo h4{font-size:1.1rem;font-weight:800;color:var(--orange);letter-spacing:1px;} .logo h4 span{color:#555;}
+        nav{background:rgba(0,0,0,0.4);padding:4px;border-radius:40px;border:1px solid rgba(255,140,66,0.12);}
+        .nav-list{display:flex;gap:2px;list-style:none;}
+        .nav-list a{text-decoration:none;color:#aaa;font-size:0.84rem;font-weight:500;padding:7px 14px;border-radius:40px;transition:var(--tr);white-space:nowrap;}
+        .nav-list a:hover,.nav-list a.active{background:rgba(255,140,66,0.14);color:var(--orange);}
+        .btn-dl{background:transparent;text-decoration:none;border:1.5px solid var(--orange);padding:7px 18px;border-radius:40px;color:var(--orange);font-weight:600;font-size:0.84rem;transition:var(--tr);white-space:nowrap;}
+        .btn-dl:hover{background:var(--orange);color:#0d0d0d;}
+        .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
+        .burger span{display:block;width:22px;height:2px;background:var(--orange);border-radius:2px;transition:var(--tr);}
+        .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+        .burger.open span:nth-child(2){opacity:0;}
+        .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+        .mobile-menu{display:none;position:fixed;top:92px;left:0;right:0;z-index:999;background:rgba(14,14,14,0.97);backdrop-filter:blur(16px);border-bottom:1.5px solid var(--orange);padding:20px;flex-direction:column;gap:8px;}
+        .mobile-menu.open{display:flex;}
+        .mobile-menu a{text-decoration:none;color:#bbb;font-size:1rem;font-weight:600;padding:12px 16px;border-radius:10px;transition:var(--tr);border:1px solid transparent;}
+        .mobile-menu a:hover{background:rgba(255,140,66,0.1);color:var(--orange);border-color:var(--border);}
+        .mobile-menu .m-dl{background:rgba(255,140,66,0.1);color:var(--orange);border-color:var(--border);text-align:center;margin-top:4px;}
+
+        section{width:100%;display:flex;justify-content:center;align-items:flex-start;padding:100px 0 80px;}
+        .section-title{font-size:2.4rem;font-weight:800;text-align:center;background:linear-gradient(135deg,#fff 40%,var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
+        .line{width:50px;height:3px;background:linear-gradient(90deg,var(--orange),var(--orange-dark));border-radius:3px;margin:14px auto;}
+        .section-sub{text-align:center;color:var(--gray);font-size:0.92rem;font-weight:500;letter-spacing:0.5px;margin-bottom:12px;}
+
+        /* cards grid */
+        .products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:100%;margin-top:20px;}
+        .pcard{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);padding:1.8rem 1.5rem;display:flex;flex-direction:column;align-items:center;gap:13px;text-align:center;transition:var(--tr);position:relative;}
+        .pcard:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,0.5);}
+        .pcard.free{border-top:3px solid #4caf50;}
+        .pcard.premium{border-top:3px solid #2196f3;}
+        .pcard.plus{border-top:3px solid var(--orange);background:linear-gradient(160deg,#1a1200,var(--card) 60%);}
+        .pcard.hacker{border-top:3px solid #e91e63;}
+        .pcard.limited{border-top:3px solid #9c27b0;}
+        .cbadge{position:absolute;top:-12px;background:var(--card);border:1px solid rgba(255,255,255,0.1);padding:4px 14px;border-radius:40px;font-size:0.74rem;font-weight:700;letter-spacing:1px;}
+        .pcard.free .cbadge{color:#4caf50;border-color:#4caf50;}
+        .pcard.premium .cbadge{color:#2196f3;border-color:#2196f3;}
+        .pcard.plus .cbadge{color:var(--orange);border-color:var(--orange);}
+        .pcard.hacker .cbadge{color:#e91e63;border-color:#e91e63;}
+        .pcard.limited .cbadge{color:#9c27b0;border-color:#9c27b0;}
+        .pcard img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.08);}
+        .card-title{font-size:1.15rem;font-weight:800;letter-spacing:1px;}
+        .card-sub{font-size:0.95rem;color:var(--gray);}
+        .card-sub span{color:var(--orange);font-weight:700;}
+        .pcard ul{list-style:none;width:100%;display:flex;flex-direction:column;gap:5px;}
+        .pcard li{display:flex;align-items:center;gap:7px;font-size:0.82rem;color:var(--light);text-align:left;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.025);transition:var(--tr);}
+        .pcard li:hover{background:rgba(255,255,255,0.045);}
+        .pcard li i{font-size:0.74rem;}
+        .pcard.free li i{color:#4caf50;} .pcard.premium li i{color:#2196f3;} .pcard.plus li i{color:var(--orange);} .pcard.hacker li i{color:#e91e63;} .pcard.limited li i{color:#9c27b0;}
+        .pcard>a{display:block;width:100%;padding:10px;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.88rem;transition:var(--tr);border:1.5px solid transparent;margin-top:auto;text-align:center;}
+        .pcard.free>a{background:rgba(76,175,80,0.1);color:#4caf50;border-color:rgba(76,175,80,0.3);} .pcard.free>a:hover{background:#4caf50;color:#0d0d0d;}
+        .pcard.premium>a{background:rgba(33,150,243,0.1);color:#2196f3;border-color:rgba(33,150,243,0.3);} .pcard.premium>a:hover{background:#2196f3;color:#0d0d0d;}
+        .pcard.plus>a{background:rgba(255,140,66,0.1);color:var(--orange);border-color:rgba(255,140,66,0.3);} .pcard.plus>a:hover{background:var(--orange);color:#0d0d0d;}
+        .pcard.hacker>a{background:rgba(233,30,99,0.1);color:#e91e63;border-color:rgba(233,30,99,0.3);} .pcard.hacker>a:hover{background:#e91e63;color:#0d0d0d;}
+        .pcard.limited>a{background:rgba(156,39,176,0.1);color:#9c27b0;border-color:rgba(156,39,176,0.3);} .pcard.limited>a:hover{background:#9c27b0;color:#0d0d0d;}
+
+        /* modals */
+        .modal{display:none!important;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);justify-content:center;align-items:center;}
+        .modal:target{display:flex!important;animation:mIn .3s ease;}
+        @keyframes mIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+        .modal-content{background:linear-gradient(160deg,#1c1c1c,#141414);border:1px solid rgba(255,140,66,0.3);border-radius:20px;padding:2.2rem;width:460px;max-width:92vw;position:relative;display:flex;flex-direction:column;gap:14px;box-shadow:0 0 60px rgba(0,0,0,0.6);max-height:90vh;overflow-y:auto;}
+        .modal-content h2{font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,#fff,var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .modal-content p{color:var(--orange);font-weight:600;}
+        .modal li{padding:9px 12px;border-radius:10px;background:rgba(255,255,255,0.04);font-size:0.86rem;color:#ddd;border-left:3px solid rgba(255,140,66,0.3);list-style:none;margin-bottom:4px;}
+        .close{position:absolute;top:14px;right:18px;font-size:1.5rem;color:var(--gray);text-decoration:none;transition:var(--tr);line-height:1;}
+        .close:hover{color:var(--orange);transform:scale(1.2);}
+        .mnav{position:fixed;top:50%;transform:translateY(-50%);text-decoration:none;color:var(--orange);font-size:1.4rem;font-weight:700;background:rgba(0,0,0,0.5);border:1px solid rgba(255,140,66,0.3);width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:var(--tr);}
+        .mnav:hover{background:rgba(255,140,66,0.2);border-color:var(--orange);}
+        .mnav.back{left:calc(50% - 280px);} .mnav.next{right:calc(50% - 280px);}
+        .modal-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 22px;border-radius:10px;border:1.5px solid rgba(255,140,66,0.4);color:var(--orange);background:rgba(255,140,66,0.08);font-weight:600;font-size:0.86rem;text-decoration:none;transition:var(--tr);}
+        .modal-btn:hover{background:var(--orange);color:#0d0d0d;}
+
+        /* form */
+        .form-card{background:var(--card);border:1px solid rgba(255,140,66,0.18);border-radius:20px;padding:2rem;width:100%;max-width:520px;margin:0 auto;}
+        .form-group{margin-bottom:18px;}
+        .form-group label{display:block;margin-bottom:7px;color:var(--gray);font-size:0.88rem;font-weight:500;}
+        .form-group label i{color:var(--orange);margin-right:7px;}
+        .form-group.optional label::after{content:' (необязательно)';font-size:0.74rem;color:#555;font-weight:400;}
+        input,textarea,select{border:1px solid rgba(255,140,66,0.25);background:rgba(0,0,0,0.4);color:#fff;border-radius:10px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:0.92rem;width:100%;transition:var(--tr);resize:vertical;}
+        input:focus,textarea:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,140,66,0.15);background:rgba(0,0,0,0.55);}
+        textarea{min-height:110px;}
+        .btn-submit{background:linear-gradient(135deg,var(--orange),var(--orange-dark));border:none;padding:13px 24px;border-radius:40px;color:#0d0d0d;font-weight:700;font-size:0.96rem;cursor:pointer;transition:var(--tr);width:100%;display:flex;align-items:center;justify-content:center;gap:9px;}
+        .btn-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 5px 22px rgba(255,140,66,0.38);}
+        .btn-submit:disabled{opacity:0.55;cursor:not-allowed;}
+        .toast{position:fixed;bottom:24px;right:20px;padding:12px 20px;border-radius:12px;color:#fff;z-index:10000;font-size:0.9rem;font-weight:600;border-left:4px solid;animation:toastIn .3s ease;max-width:calc(100vw - 40px);}
+        @keyframes toastIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+        @keyframes toastOut{from{transform:translateX(0);opacity:1}to{transform:translateX(110%);opacity:0}}
+
+        footer{width:100%;background:linear-gradient(160deg,#0a0a0a,#111);border-top:2px solid var(--orange);padding:50px 0 0;margin-top:auto;}
+        .footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-bottom:40px;}
+        .footer-col{display:flex;flex-direction:column;gap:14px;}
+        .footer-logo{display:flex;align-items:center;gap:9px;}
+        .footer-logo i{font-size:1.6rem;color:var(--orange);} .footer-logo h2{font-size:1.35rem;font-weight:800;color:var(--orange);} .footer-logo span{color:#555;}
+        .footer-desc{color:var(--gray);font-size:0.84rem;line-height:1.6;}
+        .footer-tags{display:flex;flex-wrap:wrap;gap:6px;}
+        .ftag{background:rgba(255,140,66,0.08);border:1px solid rgba(255,140,66,0.18);padding:3px 10px;border-radius:40px;font-size:0.72rem;color:var(--orange);font-weight:600;}
+        .footer-col h3{font-size:0.88rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05);}
+        .footer-menu{list-style:none;display:flex;flex-direction:column;gap:7px;}
+        .footer-menu a{text-decoration:none;color:var(--gray);font-size:0.84rem;display:flex;align-items:center;gap:7px;transition:var(--tr);}
+        .footer-menu a:hover{color:var(--orange);}
+        .clist{list-style:none;display:flex;flex-direction:column;gap:8px;}
+        .clist li{display:flex;align-items:center;gap:8px;font-size:0.84rem;color:var(--gray);}
+        .clist i{color:var(--orange);font-size:0.86rem;width:14px;}
+        .socials{display:flex;gap:8px;}
+        .socials a{width:34px;height:34px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gray);text-decoration:none;transition:var(--tr);}
+        .socials a:hover{background:rgba(255,140,66,0.14);border-color:var(--orange);color:var(--orange);}
+        .sub-form a{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:rgba(255,140,66,0.08);border:1px solid rgba(255,140,66,0.25);border-radius:10px;color:var(--orange);font-size:0.84rem;font-weight:600;text-decoration:none;transition:var(--tr);}
+        .sub-form a:hover{background:var(--orange);color:#0d0d0d;}
+        .footer-bot{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-top:1px solid rgba(255,255,255,0.05);font-size:0.8rem;color:var(--gray);flex-wrap:wrap;gap:10px;}
+        .footer-bot-links{display:flex;gap:14px;}
+        .footer-bot-links a{color:var(--gray);text-decoration:none;transition:var(--tr);}
+        .footer-bot-links a:hover{color:var(--orange);}
+
+        @media(max-width:1100px){.products-grid{grid-template-columns:repeat(2,1fr);} .footer-grid{grid-template-columns:repeat(2,1fr);}}
+        @media(max-width:900px){nav{display:none;} .burger{display:flex;} .btn-dl{display:none;} .section-title{font-size:1.9rem;} .mnav.back{left:8px;} .mnav.next{right:8px;}}
+        @media(max-width:600px){header{width:94%;height:60px;top:10px;} .mobile-menu{top:82px;} .logo h4{font-size:1rem;} .products-grid{grid-template-columns:1fr;} .footer-grid{grid-template-columns:1fr;} .footer-bot{flex-direction:column;text-align:center;} .form-card{padding:1.4rem;} .section-title{font-size:1.7rem;} section{padding:80px 0 60px;}}
+    </style>
+</head>
+<body>
+<div class="site-container">
+
+    <header>
+        <div class="container">
+            <div class="logo-wrap">
+                <img src="images/logo.jpg" class="logo-img" alt="BeaverKit">
+                <a href="index.html" class="logo"><h4>BEAVER<span>KIT</span></h4></a>
+            </div>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html#main">Главная</a></li>
+                    <li><a href="index.html#info2">О продукте</a></li>
+                    <li><a href="vpn.html">ShadowSocks VPN</a></li>
+                    <li><a href="buykey.html" class="active">Купить ключ</a></li>
+                    <li><a href="index.html#contacts">Контакты</a></li>
+                </ul>
+            </nav>
+            <a href="BeaverKit_v3.2.rar" download class="btn-dl"><i class="fas fa-download"></i> Скачать</a>
+            <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Главная</a>
+        <a href="index.html#info2">О продукте</a>
+        <a href="vpn.html">ShadowSocks VPN</a>
+        <a href="buykey.html">Купить ключ</a>
+        <a href="index.html#contacts">Контакты</a>
+        <a href="BeaverKit_v3.2.rar" download class="m-dl"><i class="fas fa-download"></i> Скачать клиент</a>
+    </div>
+
+    <main>
+        <section>
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h1 class="section-title">Тарифы и цены</h1>
+                <div class="line"></div>
+                <p class="section-sub">Выберите подходящий план</p>
+                <div class="products-grid">
+                    <div class="pcard free"><div class="cbadge">FREE</div><img src="images/product-free.jpg" alt="free"><div class="card-title">FREE KIT</div><div class="card-sub">Цена: <span>0 USDT</span></div><ul><li><i class="fas fa-check"></i> Прокси-парсер</li><li><i class="fas fa-check"></i> Минималка OPSEC</li><li><i class="fas fa-check"></i> Пастер (2 шаблона)</li><li><i class="fas fa-check"></i> OSINT (базовый)</li></ul><a href="#modal1">Подробнее →</a><a href="https://t.me/beaver_support" target="_blank" style="background:rgba(76,175,80,0.1);color:#4caf50;border-color:rgba(76,175,80,0.3);border-radius:10px;border:1.5px solid;padding:9px;text-decoration:none;font-size:0.86rem;font-weight:700;text-align:center;display:block;transition:var(--tr);" onmouseover="this.style.background='#4caf50';this.style.color='#0d0d0d';" onmouseout="this.style.background='rgba(76,175,80,0.1)';this.style.color='#4caf50';">Активировать</a></div>
+
+                    <div class="pcard premium"><div class="cbadge">PREMIUM</div><img src="images/product-premium.jpg" alt="premium"><div class="card-title">PREMIUM KIT</div><div class="card-sub">Цена: <span>7 USDT</span></div><ul><li><i class="fas fa-check"></i> Bober AI</li><li><i class="fas fa-check"></i> Полный сканнер</li><li><i class="fas fa-check"></i> Пастер (4 шаблона)</li><li><i class="fas fa-check"></i> Норм OPSEC</li></ul><a href="#modal2">Подробнее →</a><a href="https://t.me/beaver_support" target="_blank" style="background:rgba(33,150,243,0.1);color:#2196f3;border-color:rgba(33,150,243,0.3);border-radius:10px;border:1.5px solid;padding:9px;text-decoration:none;font-size:0.86rem;font-weight:700;text-align:center;display:block;transition:var(--tr);" onmouseover="this.style.background='#2196f3';this.style.color='#0d0d0d';" onmouseout="this.style.background='rgba(33,150,243,0.1)';this.style.color='#2196f3';">Купить</a></div>
+
+                    <div class="pcard plus"><div class="cbadge">🔥 PREMIUM+</div><img src="images/product-premium-plus.jpg" alt="plus"><div class="card-title">PREMIUM+ KIT</div><div class="card-sub">Цена: <span>15 USDT</span></div><ul><li><i class="fas fa-check"></i> ShadowSocks VPN</li><li><i class="fas fa-check"></i> HTTP Proxy / SOCKS5</li><li><i class="fas fa-check"></i> Антималварь</li><li><i class="fas fa-check"></i> Bober AI 2.0</li><li><i class="fas fa-check"></i> Пастер (7 шаблонов)</li></ul><a href="#modal3">Подробнее →</a><a href="https://t.me/beaver_support" target="_blank" style="background:rgba(255,140,66,0.1);color:var(--orange);border-color:rgba(255,140,66,0.3);border-radius:10px;border:1.5px solid;padding:9px;text-decoration:none;font-size:0.86rem;font-weight:700;text-align:center;display:block;transition:var(--tr);" onmouseover="this.style.background='var(--orange)';this.style.color='#0d0d0d';" onmouseout="this.style.background='rgba(255,140,66,0.1)';this.style.color='var(--orange)';">Купить</a></div>
+
+                    <div class="pcard hacker"><div class="cbadge">HACKER</div><img src="images/product-hacker.jpg" alt="hacker"><div class="card-title">HACKER KIT</div><div class="card-sub">Цена: <span>49 USDT</span></div><ul><li><i class="fas fa-check"></i> Bober Food (OSINT)</li><li><i class="fas fa-check"></i> Граф связей</li><li><i class="fas fa-check"></i> Все пасты</li></ul><a href="#modal4">Подробнее →</a><a href="https://t.me/beaver_support" target="_blank" style="background:rgba(233,30,99,0.1);color:#e91e63;border-color:rgba(233,30,99,0.3);border-radius:10px;border:1.5px solid;padding:9px;text-decoration:none;font-size:0.86rem;font-weight:700;text-align:center;display:block;transition:var(--tr);" onmouseover="this.style.background='#e91e63';this.style.color='#0d0d0d';" onmouseout="this.style.background='rgba(233,30,99,0.1)';this.style.color='#e91e63';">Купить</a></div>
+
+                    <div class="pcard limited"><div class="cbadge">ADMIN</div><img src="images/product-admin.jpg" alt="admin"><div class="card-title">ADMIN KIT</div><div class="card-sub">Цена: <span>249 USDT</span></div><ul><li><i class="fas fa-check"></i> Выдача ключей</li><li><i class="fas fa-check"></i> Дистрибутивы</li><li><i class="fas fa-check"></i> Скрытые функции</li><li><i class="fas fa-check"></i> VIP статус</li></ul><a href="#modal5">Подробнее →</a><a href="https://t.me/beaver_support" target="_blank" style="background:rgba(156,39,176,0.1);color:#9c27b0;border-color:rgba(156,39,176,0.3);border-radius:10px;border:1.5px solid;padding:9px;text-decoration:none;font-size:0.86rem;font-weight:700;text-align:center;display:block;transition:var(--tr);" onmouseover="this.style.background='#9c27b0';this.style.color='#0d0d0d';" onmouseout="this.style.background='rgba(156,39,176,0.1)';this.style.color='#9c27b0';">Купить</a></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ФОРМА ЗАЯВКИ -->
+        <section style="background:linear-gradient(160deg,#0a0a0a,#111);">
+            <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <h2 class="section-title">Оставить заявку</h2>
+                <div class="line"></div>
+                <p class="section-sub">Напишите — ответим в течение часа</p>
+                <div class="form-card">
+                    <form id="contactForm" novalidate>
+                        <div class="form-group optional">
+                            <label><i class="fas fa-user"></i> От кого</label>
+                            <input type="text" name="name" placeholder="Ник или имя — необязательно">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-comment"></i> Сообщение *</label>
+                            <textarea name="message" placeholder="Напиши что интересует: тариф, вопрос, проблема..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Отправить</button>
+                    </form>
+                </div>
+                <p style="color:var(--gray);font-size:0.78rem;margin-top:10px;text-align:center;">
+                    <i class="fas fa-lock" style="color:var(--orange);"></i> Нажимая «Отправить», вы соглашаетесь с
+                    <a href="policy.html" style="color:var(--orange);">политикой конфиденциальности</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODALS -->
+    <div id="modal1" class="modal"><a href="#modal2" class="mnav next">→</a><div class="modal-content"><a href="#" class="close">&times;</a><h2>FREE KIT</h2><p>0 USDT — навсегда</p><ul><li>Прокси-парсер</li><li>Минималка OPSEC</li><li>Доступ к OSINT (базовый)</li><li>Пастер (2 шаблона)</li><li>Доступ резаный</li></ul><a href="https://t.me/beaver_support" target="_blank" class="modal-btn"><i class="fab fa-telegram"></i> Получить в Telegram</a></div></div>
+    <div id="modal2" class="modal"><a href="#modal1" class="mnav back">←</a><a href="#modal3" class="mnav next">→</a><div class="modal-content"><a href="#" class="close">&times;</a><h2>PREMIUM KIT</h2><p>7 USDT</p><ul><li>✦ Bober AI (умный)</li><li>✦ Полный сканнер</li><li>✦ Пастер (4 шаблона)</li><li>✦ Норм OPSEC</li><li>✦ Склад паст</li></ul><a href="https://t.me/beaver_support" target="_blank" class="modal-btn"><i class="fab fa-telegram"></i> Купить в Telegram</a></div></div>
+    <div id="modal3" class="modal"><a href="#modal2" class="mnav back">←</a><a href="#modal4" class="mnav next">→</a><div class="modal-content"><a href="#" class="close">&times;</a><h2>PREMIUM+ KIT</h2><p>15 USDT</p><ul><li>✦ Bober AI 2.0</li><li>✦ ShadowSocks VPN</li><li>✦ HTTP Proxy / SOCKS5</li><li>✦ Антималварь</li><li>✦ Пастер (7 шаблонов)</li></ul><a href="https://t.me/beaver_support" target="_blank" class="modal-btn"><i class="fab fa-telegram"></i> Купить в Telegram</a></div></div>
+    <div id="modal4" class="modal"><a href="#modal3" class="mnav back">←</a><a href="#modal5" class="mnav next">→</a><div class="modal-content"><a href="#" class="close">&times;</a><h2>HACKER KIT</h2><p>49 USDT</p><ul><li>✦ Bober Food (полный OSINT)</li><li>✦ Граф связей</li><li>✦ Все пасты</li><li>✦ VIP-клиент</li></ul><a href="https://t.me/beaver_support" target="_blank" class="modal-btn"><i class="fab fa-telegram"></i> Купить в Telegram</a></div></div>
+    <div id="modal5" class="modal"><a href="#modal4" class="mnav back">←</a><div class="modal-content"><a href="#" class="close">&times;</a><h2>ADMIN KIT</h2><p>249 USDT</p><ul><li>✦ Выдача ключей</li><li>✦ Дистрибутивы</li><li>✦ Скрытые функции и разделы</li><li>✦ VIP-статус</li></ul><a href="https://t.me/beaver_support" target="_blank" class="modal-btn"><i class="fab fa-telegram"></i> Купить в Telegram</a></div></div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><div class="footer-logo"><i class="fas fa-paw"></i><h2>BEAVER<span>KIT</span></h2></div><p class="footer-desc">OSINT + ShadowSocks VPN. Безопасность и анонимность для IT-специалистов.</p><div class="footer-tags"><span class="ftag">OSINT</span><span class="ftag">ShadowSocks</span><span class="ftag">VPN</span><span class="ftag">SOCKS5</span></div></div>
+                <div class="footer-col"><h3>Навигация</h3><ul class="footer-menu"><li><a href="index.html"><i class="fas fa-chevron-right"></i> Главная</a></li><li><a href="vpn.html"><i class="fas fa-chevron-right"></i> ShadowSocks VPN</a></li><li><a href="buykey.html"><i class="fas fa-chevron-right"></i> Купить ключ</a></li><li><a href="index.html#contacts"><i class="fas fa-chevron-right"></i> Контакты</a></li></ul></div>
+                <div class="footer-col"><h3>Контакты</h3><ul class="clist"><li><i class="fas fa-envelope"></i> beaverkit@proton.me</li><li><i class="fas fa-phone"></i> +7 995 476 8703</li><li><i class="fab fa-telegram"></i> @beaver_support</li></ul><div class="socials"><a href="https://t.me/Beaver_kit" target="_blank"><i class="fab fa-telegram"></i></a><a href="https://github.com/Kyz8ka/Beaver_kit" target="_blank"><i class="fab fa-github"></i></a></div></div>
+                <div class="footer-col"><h3>Новости</h3><p class="footer-desc">Подпишись на канал и получай обновления первым</p><div class="sub-form"><a href="https://t.me/Beaver_kit" target="_blank"><i class="fas fa-paw"></i> Подписаться</a></div></div>
+            </div>
+            <div class="footer-bot">
+                <div style="display:flex;gap:10px;color:var(--orange);"><i class="fas fa-tractor"></i><i class="fas fa-paw"></i><i class="fas fa-shield-halved"></i></div>
+                <div>© 2026 BEAVERKIT. Все права защищены.</div>
+                <div class="footer-bot-links"><a href="policy.html">Политика</a><a href="#">Условия</a><a href="#">Cookie</a></div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+const TG_TOKEN = 'ВАШ_ТОКЕН_СЮДА';
+const TG_CHAT  = '-1002941500899';
+const TG_API   = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+
+fetch(TG_API, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ chat_id:TG_CHAT, text:`🟢 ПОСЕЩЕНИЕ\n📄 buykey.html\n🕐 ${new Date().toLocaleString('ru')}\n💻 ${navigator.userAgent.substring(0,90)}` })
+}).catch(()=>{});
+
+window.addEventListener('scroll', () => {
+    document.querySelector('header').style.backdropFilter = window.scrollY > 20 ? 'blur(20px)' : 'blur(16px)';
+});
+const burger = document.getElementById('burger');
+const mMenu  = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => { burger.classList.toggle('open'); mMenu.classList.toggle('open'); });
+
+// Закрыть модал по клику на overlay
+document.querySelectorAll('.modal').forEach(m => {
+    m.addEventListener('click', e => { if(e.target === m) window.location.hash = ''; });
+});
+
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn  = form.querySelector('button[type="submit"]');
+    const orig = btn.innerHTML;
+    const msg  = form.querySelector('[name="message"]').value.trim();
+    const name = form.querySelector('[name="name"]').value.trim();
+    if (!msg) { showToast('❌ Напишите сообщение!', 'error'); return; }
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+    const text = `📨 <b>ЗАЯВКА С buykey.html</b>\n\n`
+        + (name ? `👤 От: ${name}\n` : `👤 Анонимно\n`)
+        + `💬 Сообщение:\n${msg}\n\n🕐 ${new Date().toLocaleString('ru')}`;
+    try {
+        const res = await fetch(TG_API, {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ chat_id:TG_CHAT, text, parse_mode:'HTML' })
+        });
+        if((await res.json()).ok){
+            showToast('✅ Сообщение отправлено!', 'success');
+            form.reset();
+        } else throw new Error();
+    } catch(err) {
+        showToast('❌ Ошибка. Напиши в @beaver_support', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = orig;
+    }
+});
+
+function showToast(msg, type) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.style.background    = type === 'success' ? '#0d2a0d' : '#2a0d0d';
+    t.style.borderLeftColor = type === 'success' ? '#4caf50' : '#e91e63';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => { t.style.animation = 'toastOut .3s ease forwards'; setTimeout(() => t.remove(), 320); }, 4000);
+}
+</script>
+</body>
+</html>
